@@ -14,6 +14,7 @@ class Input extends StatefulWidget {
   final bool isPassword;
   final bool useCardBackgroundColor;
   final int maxLines;
+  final void Function()? onEditingComplete;
    
 
   const Input(this.placeholder, {
@@ -25,6 +26,7 @@ class Input extends StatefulWidget {
     this.hint = '',
     this.useCardBackgroundColor = true,
     this.maxLines = 1,
+    this.onEditingComplete,
     Key? key 
   }) : super(key: key);
 
@@ -76,7 +78,7 @@ class _InputState extends State<Input> {
           focusNode: controller!.focusNode,
           controller: controller!.textController,
           obscureText: obscure,
-          onEditingComplete: ()=>FocusScope.of(context).nextFocus(),
+          onEditingComplete: widget.onEditingComplete ?? ()=>FocusScope.of(context).nextFocus(),
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).disabledColor, width: 2),

@@ -1,68 +1,68 @@
-import 'package:comment_section/app/application.dart';
-import 'package:comment_section/src/comments/models/comment.dart';
+import 'package:comment_section/app/Theme/theme.dart';
 import 'package:comment_section/src/comments/views/CommentsView/comments_view_controller.dart';
-import 'package:comment_section/src/comments/widget/CommentCard/comment_card.dart';
-import 'package:comment_section/src/users/models/user.dart';
-import 'package:comment_section/src/users/models/user_image.dart';
+import 'package:comment_section/src/comments/widget/CommentBottomWidget/comment_bottom_widget.dart';
+import 'package:comment_section/src/comments/widget/CommentField/comment_field.dart';
+import 'package:comment_section/src/comments/widget/CommentsList/comments_list.dart';
+import 'package:comment_section/src/comments/widget/CommentsListError/comments_list_error.dart';
+import 'package:comment_section/src/comments/widget/CommentsListLoad/comments_list_load.dart';
 import 'package:flutter/material.dart';
 
-class CommentsView extends StatelessWidget {
-  final CommentsViewController controller = CommentsViewController();
+class CommentsView extends StatefulWidget {
 
-  CommentsView({ Key? key }) : super(key: key);
+  const CommentsView({ Key? key }) : super(key: key);
+
+  @override
+  State<CommentsView> createState() => _CommentsViewState();
+}
+
+class _CommentsViewState extends State<CommentsView> {
+  late CommentsViewController controller = CommentsViewController();
+
+  @override
+  void initState() {
+    controller.bottomWidget = ValueNotifier(FloatingActionButton(
+      child: const Icon(Icons.comment),
+      backgroundColor: AppTheme.theme.primaryColor,
+      onPressed: (){
+        controller.bottomWidget.value = CommentField(controller);
+        Future.delayed(const Duration(milliseconds: 500), (){
+          controller.commentInputController.focusNode.requestFocus();
+        });
+      },
+    ));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.commentInputController.focusNode.dispose();
+    controller.commentInputController.textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final comment = Comment(
-      id: 1, 
-      content: 'I couldn\'t agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.', 
-      createdAt: '2 week ago', 
-      user: User(username: 'amyrobson', image: UserImage(png: 'images/avatars/image-amyrobson.png')),
-      replies: [
-        Comment(
-          id: 2, 
-          content: 'Woah, your project looks awesome! How long have you been coding for? I\'m still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!', 
-          createdAt: '2 week ago',
-          replyingTo: 'amyrobson',
-          user: User(username: 'maxblagun', image: UserImage(png: 'images/avatars/image-maxblagun.png')),
-        ),
-        Comment(
-          id: 3, 
-          content: 'Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You\'ve nailed the design and the responsiveness at various breakpoints works really well.', 
-          createdAt: '1 week ago',
-          replyingTo: 'maxblagun',
-          user: User(username: 'amyrobson', image: UserImage(png: 'images/avatars/image-amyrobson.png')),
-        )
-      ]
-    );
-
-    return Scaffold(
-      body: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 40.h,
-              horizontal: 25.w
-            ),
-            child: ListView(
+    return FutureBuilder<Map<String, dynamic>>(
+      future: controller.fetchComments,
+      builder: (context, snapshot){
+        Widget child;
+        if (snapshot.hasData) {
+          child = Scaffold(
+            body: Stack(
               children: [
-                CommentCard(comment: comment),
+                CommentsList(controller, snapshot.data!),
+                CommentBottomWidget(controller)
               ],
-            )
-          ),
-          /*Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 20.h,
-              horizontal: 25.w
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: const [CommentField()],
-            ),
-          )*/
-        ],
-      ),
+          );
+        } else if (snapshot.hasError) {
+          child = CommentsListError(snapshot.error);
+        } else {
+          child = const CommentsListLoad();
+        }
+
+        return child;
+      } 
     );
   }
 }

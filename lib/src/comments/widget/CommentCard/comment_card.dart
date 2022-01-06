@@ -8,9 +8,11 @@ import 'package:flutter/material.dart';
 
 class CommentCard extends StatelessWidget {
   final Comment comment;
+  final Comment? parentComment;
 
   const CommentCard({
     required this.comment,
+    this.parentComment,
     Key? key 
   }) : super(key: key);
 
@@ -21,7 +23,7 @@ class CommentCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if(comment.replyingTo.isEmpty) SizedBox(height: 30.h),
+        if(comment.replyingTo!.isEmpty) SizedBox(height: 30.h),
         Container(
           padding: EdgeInsets.symmetric(
             vertical: 20.h,
@@ -51,7 +53,7 @@ class CommentCard extends StatelessWidget {
               SizedBox(height: 20.h),
               RichText(
                 text: TextSpan(
-                  text: comment.replyingTo.isNotEmpty ? '@${comment.replyingTo} ' : '',
+                  text: comment.replyingTo!.isNotEmpty ? '@${comment.replyingTo} ' : '',
                   style: AppTypography.body1.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                     fontSize: 21.fs,
@@ -76,7 +78,7 @@ class CommentCard extends StatelessWidget {
                 children: [
                   CommentScoreCounter(
                     score: comment.score,
-                    onChange: (score){},
+                    onChange: (score){ comment.score = score; },
                   ),
                   const Expanded(child: SizedBox()),
                   Expanded(child: LinkButton(
@@ -105,7 +107,7 @@ class CommentCard extends StatelessWidget {
                 SizedBox(width: 13.w),
                 Expanded(child: Padding(
                   padding: EdgeInsets.only(bottom: index == comment.replies.length-1 ? 0 : 15.h),
-                  child: CommentCard(comment: comment.replies[index]),
+                  child: CommentCard(comment: comment.replies[index], parentComment: comment),
                 ))
               ],
             ),

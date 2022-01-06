@@ -2,12 +2,12 @@ import 'package:comment_section/src/users/models/user.dart';
 
 class Comment {
   final int id;
-  final int score;
   final String content;
   final String createdAt;
-  final String replyingTo;
+  final String? replyingTo;
   final User user;
   final List<Comment> replies;
+  int score;
 
   Comment({
     required this.id,
@@ -25,7 +25,7 @@ class Comment {
     createdAt = json['createdAt'],
     replyingTo = json.containsKey('replyingTo') ? json['replyingTo'] : '',
     score = json['score'],
-    replies = (json['replies'] as List).map((e) => Comment.fromJson(e)).toList(),
+    replies = json.containsKey('replies') ? (json['replies'] as List).map((e) => Comment.fromJson(e)).toList() : [],
     user = User.fromJson(json['user']);
 
   Map<String, dynamic> toJson() => {
