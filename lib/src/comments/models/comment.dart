@@ -5,6 +5,7 @@ class Comment {
   final int score;
   final String content;
   final String createdAt;
+  final String replyingTo;
   final User user;
   final List<Comment> replies;
 
@@ -13,6 +14,7 @@ class Comment {
     required this.content,
     required this.createdAt,
     required this.user,
+    this.replyingTo = '',
     this.score = 0,
     this.replies = const []
   });
@@ -21,6 +23,7 @@ class Comment {
   : id = json['id'],
     content = json['content'],
     createdAt = json['createdAt'],
+    replyingTo = json.containsKey('replyingTo') ? json['replyingTo'] : '',
     score = json['score'],
     replies = (json['replies'] as List).map((e) => Comment.fromJson(e)).toList(),
     user = User.fromJson(json['user']);
@@ -29,6 +32,7 @@ class Comment {
     'id': id,
     'content': content,
     'createdAt': createdAt,
+    'replyingTo': replyingTo,
     'score': score,
     'replies': replies.map((e) => e.toJson()),
     'user': user.toJson()

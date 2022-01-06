@@ -1,5 +1,6 @@
 import 'package:comment_section/app/Theme/theme.dart';
 import 'package:comment_section/app/application.dart';
+import 'package:comment_section/src/comments/views/CommentsView/comments_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,9 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ApplicationWidget(
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Comments Section',
         theme: AppTheme.theme,
-        home: Container(),
+        home: const CommentsView(),
       ),
     );
   }
