@@ -1,6 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors
 
-import 'package:comment_section/global/Text/typography.dart';
+import 'package:comment_section/app/Text/typography.dart';
 import 'package:flutter/material.dart';
 
 class UIText extends Text {

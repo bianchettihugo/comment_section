@@ -1,4 +1,4 @@
-import 'package:comment_section/global/application.dart';
+import 'package:comment_section/app/application.dart';
 import 'package:flutter/material.dart';
 
 

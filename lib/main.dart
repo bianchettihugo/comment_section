@@ -1,5 +1,5 @@
-import 'package:comment_section/global/Theme/theme.dart';
-import 'package:comment_section/global/application.dart';
+import 'package:comment_section/app/Theme/theme.dart';
+import 'package:comment_section/app/application.dart';
 import 'package:flutter/material.dart';
 
 void main() {

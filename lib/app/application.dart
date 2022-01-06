@@ -1,4 +1,4 @@
-import 'package:comment_section/global/Size/size_config.dart';
+import 'package:comment_section/app/Size/size_config.dart';
 import 'package:flutter/material.dart';
 
 class ApplicationWidget extends StatelessWidget {
