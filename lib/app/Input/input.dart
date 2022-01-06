@@ -13,6 +13,7 @@ class Input extends StatefulWidget {
   final bool obscure;
   final bool isPassword;
   final bool useCardBackgroundColor;
+  final int maxLines;
    
 
   const Input(this.placeholder, {
@@ -23,6 +24,7 @@ class Input extends StatefulWidget {
     this.isPassword = false,
     this.hint = '',
     this.useCardBackgroundColor = true,
+    this.maxLines = 1,
     Key? key 
   }) : super(key: key);
 
@@ -68,6 +70,7 @@ class _InputState extends State<Input> {
         ),
         const SizedBox(height: 5),
         TextFormField(
+          maxLines: widget.maxLines,
           keyboardType: widget.keyboard,
           style: AppTypography.body1,
           focusNode: controller!.focusNode,
@@ -76,7 +79,7 @@ class _InputState extends State<Input> {
           onEditingComplete: ()=>FocusScope.of(context).nextFocus(),
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).disabledColor, width: 0.1),
+              borderSide: BorderSide(color: Theme.of(context).disabledColor, width: 2),
               borderRadius: const BorderRadius.all(Radius.circular(8)),
             ),
             focusedBorder: OutlineInputBorder(

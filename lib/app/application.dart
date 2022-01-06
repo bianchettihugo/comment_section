@@ -1,4 +1,5 @@
 import 'package:comment_section/app/Size/size_config.dart';
+import 'package:comment_section/src/comments/views/CommentsView/comments_view_controller.dart';
 import 'package:flutter/material.dart';
 
 class ApplicationWidget extends StatelessWidget {
@@ -26,7 +27,8 @@ class ApplicationWidget extends StatelessWidget {
 
 class Application extends InheritedWidget {
   static SizeConfig? sizeConfig;
-  const Application({
+  final CommentsViewController controller = CommentsViewController();
+  Application({
     Key? key,
     required Widget child,
   }) : super(key: key, child: child);

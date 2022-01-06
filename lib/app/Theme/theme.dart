@@ -7,7 +7,7 @@ class AppTheme {
     scaffoldBackgroundColor: const Color(0xffF5F6FA),
     cardColor: const Color(0xffFFFFFF),
     disabledColor: const Color(0xffECECEC),
-    unselectedWidgetColor: const Color(0xffDDDDDD),
+    unselectedWidgetColor: const Color(0xff94979C),
     textTheme: const TextTheme().apply(
       bodyColor: const Color(0xff333A42),
       displayColor: const Color(0xff333A42),
@@ -22,7 +22,7 @@ class AppTheme {
       onSecondary: Color(0xffFFFFFF),
       onError: Color(0xffFFFFFF),
       onBackground: Color(0xff333A42),
-      onSurface: Color(0xff333A42)
+      onSurface: Color(0xff94979C)
     )
   );
 }

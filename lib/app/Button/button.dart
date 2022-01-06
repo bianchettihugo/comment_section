@@ -44,6 +44,11 @@ class Button extends StatelessWidget {
       },
       style: ButtonStyle(
         visualDensity: _density,
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(9),
+          )
+        ),
         backgroundColor:  MaterialStateProperty.all<Color>(
           Theme.of(context).primaryColor
         ),

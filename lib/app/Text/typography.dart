@@ -12,7 +12,7 @@ class AppTypography {
 
   static TextStyle get body1 => TextStyle(
     fontWeight: FontWeight.normal,
-    fontSize: 16.fs,
+    fontSize: 18.fs,
   );
 
   static TextStyle get body2 => TextStyle(

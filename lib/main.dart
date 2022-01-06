@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Comments Section',
         theme: AppTheme.theme,
-        home: const CommentsView(),
+        home: CommentsView(),
       ),
     );
   }
