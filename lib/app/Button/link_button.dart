@@ -15,13 +15,15 @@ class LinkButton extends StatelessWidget {
   final TapValidator _tapValidator = TapValidator();
   final double opacity;
   final LinkButtonSize size;
+  final Color? color;
 
   LinkButton({Key? key, 
     required this.text,
     required this.onTap,
     this.icon,
     this.opacity = 1,
-    this.size = LinkButtonSize.big
+    this.size = LinkButtonSize.big,
+    this.color
   }) : super(key: key);
 
   
@@ -36,7 +38,7 @@ class LinkButton extends StatelessWidget {
       },
       icon: icon != null ? Transform.translate(
         offset: const Offset(3, -2),
-        child: Icon(icon, size: 22.w, color: Theme.of(context).primaryColor),
+        child: Icon(icon, size: 22.w, color: color ?? Theme.of(context).primaryColor),
       ) : const SizedBox.shrink(), 
       label: fontType(text, style: TextStyle(
         color: Theme.of(context).primaryColor.withOpacity(opacity),

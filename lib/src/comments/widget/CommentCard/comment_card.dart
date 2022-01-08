@@ -1,23 +1,33 @@
 import 'package:comment_section/app/Button/link_button.dart';
+import 'package:comment_section/app/Dependency/dependency.dart';
 import 'package:comment_section/app/Text/typography.dart';
 import 'package:comment_section/app/Text/ui_text.dart';
 import 'package:comment_section/app/application.dart';
 import 'package:comment_section/src/comments/models/comment.dart';
+import 'package:comment_section/src/comments/views/CommentsView/comments_view_controller.dart';
 import 'package:comment_section/src/comments/widget/CommentScoreCounter/comment_score_counter.dart';
+import 'package:comment_section/src/comments/widget/CommentTag/comment_tag.dart';
 import 'package:flutter/material.dart';
 
 class CommentCard extends StatelessWidget {
+  final String commentIndex;
   final Comment comment;
   final Comment? parentComment;
+  final Function(int)? onScoreChange;
+  final controller = Dependency.get<CommentsViewController>();
 
-  const CommentCard({
+  CommentCard({
     required this.comment,
+    required this.commentIndex,
     this.parentComment,
+    this.onScoreChange,
     Key? key 
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isFromCurrentUser = comment.user.username == 
+    controller.comments!.value['currentUser']['username'];
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -38,16 +48,55 @@ class CommentCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage(comment.user.image!.png),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: AssetImage(comment.user.image!.png),
+                      ),
+                      const SizedBox(width: 10),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          UIText.body1(comment.user.username, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          UIText.body2(comment.createdAt, style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+                        ],
+                      ),
+                      if(isFromCurrentUser) const SizedBox(width: 15),
+                      if(isFromCurrentUser) const CommentTag(),
+                    ],
                   ),
-                  const SizedBox(width: 10),
-                  UIText.body1(comment.user.username, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  const SizedBox(width: 25),
-                  UIText.body1(comment.createdAt, style: TextStyle(color: Theme.of(context).colorScheme.onSurface))
+                  if(isFromCurrentUser) Material(
+                    color: Theme.of(context).cardColor,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          color: Theme.of(context).primaryColor,
+                          icon: const Icon(Icons.edit),
+                          onPressed: () async {
+                            final confirmation = await controller.showDeleteConfirmationDialog(context);
+                            if(confirmation){
+                              controller.deleteComment(commentIndex);
+                            }
+                          }, 
+                        ),
+                        IconButton(
+                          color: Theme.of(context).colorScheme.error,
+                          icon: const Icon(Icons.delete),
+                          onPressed: () async {
+                            final confirmation = await controller.showDeleteConfirmationDialog(context);
+                            if(confirmation){
+                              controller.deleteComment(commentIndex);
+                            }
+                          }, 
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
               SizedBox(height: 20.h),
@@ -67,10 +116,6 @@ class CommentCard extends StatelessWidget {
                   ],
                 ),
               ),
-              /*UIText.body1(
-                comment.content,
-                style: TextStyle(color: Theme.of(context).colorScheme.onSurface)
-              ),*/
               SizedBox(height: 25.h),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,7 +123,12 @@ class CommentCard extends StatelessWidget {
                 children: [
                   CommentScoreCounter(
                     score: comment.score,
-                    onChange: (score){ comment.score = score; },
+                    onChange: (score){ 
+                      comment.score = score; 
+                      if(onScoreChange != null){
+                        onScoreChange!(score);
+                      }
+                    },
                   ),
                   const Expanded(child: SizedBox()),
                   Expanded(child: LinkButton(
@@ -107,7 +157,7 @@ class CommentCard extends StatelessWidget {
                 SizedBox(width: 13.w),
                 Expanded(child: Padding(
                   padding: EdgeInsets.only(bottom: index == comment.replies.length-1 ? 0 : 15.h),
-                  child: CommentCard(comment: comment.replies[index], parentComment: comment),
+                  child: CommentCard(comment: comment.replies[index], commentIndex: '$commentIndex:$index', parentComment: comment),
                 ))
               ],
             ),

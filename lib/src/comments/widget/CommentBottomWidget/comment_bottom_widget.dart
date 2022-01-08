@@ -1,10 +1,13 @@
+import 'package:comment_section/app/Dependency/dependency.dart';
 import 'package:comment_section/app/application.dart';
 import 'package:comment_section/src/comments/views/CommentsView/comments_view_controller.dart';
 import 'package:flutter/material.dart';
 
 class CommentBottomWidget extends StatelessWidget {
   final CommentsViewController controller;
-  const CommentBottomWidget(this.controller, { Key? key }) : super(key: key);
+
+  CommentBottomWidget({ Key? key }) 
+  : controller = Dependency.get<CommentsViewController>(), super(key: key);
 
   @override
   Widget build(BuildContext context) {

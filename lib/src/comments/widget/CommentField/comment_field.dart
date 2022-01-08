@@ -39,11 +39,11 @@ class CommentField extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CircleAvatar(
-                backgroundColor: Theme.of(context).primaryColor,
-                child: const Text('UN'),
+                backgroundImage: AssetImage(controller.comments?.value['currentUser']['image']['png']),
               ),
               const Expanded(child: SizedBox(), flex: 2),
               Expanded(child: Button(text: 'SEND', onTap: (){
+                controller.sendComment();
                 controller.bottomWidget.value = FloatingActionButton(
                   child: const Icon(Icons.comment),
                   backgroundColor: Theme.of(context).primaryColor,

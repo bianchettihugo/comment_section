@@ -34,7 +34,7 @@ class Comment {
     'createdAt': createdAt,
     'replyingTo': replyingTo,
     'score': score,
-    'replies': replies.map((e) => e.toJson()),
+    'replies': replies.map((e) => e.toJson()).toList(),
     'user': user.toJson()
   };
   

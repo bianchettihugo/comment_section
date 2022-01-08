@@ -1,3 +1,4 @@
+import 'package:comment_section/app/Dependency/dependency.dart';
 import 'package:comment_section/app/Theme/theme.dart';
 import 'package:comment_section/src/comments/views/CommentsView/comments_view_controller.dart';
 import 'package:comment_section/src/comments/widget/CommentBottomWidget/comment_bottom_widget.dart';
@@ -16,7 +17,7 @@ class CommentsView extends StatefulWidget {
 }
 
 class _CommentsViewState extends State<CommentsView> {
-  late CommentsViewController controller = CommentsViewController();
+  final controller = Dependency.get<CommentsViewController>();
 
   @override
   void initState() {
@@ -47,11 +48,12 @@ class _CommentsViewState extends State<CommentsView> {
       builder: (context, snapshot){
         Widget child;
         if (snapshot.hasData) {
+          controller.comments ??= ValueNotifier(snapshot.data!);
           child = Scaffold(
             body: Stack(
               children: [
-                CommentsList(controller, snapshot.data!),
-                CommentBottomWidget(controller)
+                CommentsList(controller.comments!.value),
+                CommentBottomWidget()
               ],
             ),
           );

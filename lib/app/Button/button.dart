@@ -9,12 +9,14 @@ class Button extends StatelessWidget {
   final void Function() onTap;
   final TapValidator _tapValidator = TapValidator();
   final VisualDensity _density;
+  final Color? color;
 
 
   Button({
     required this.text,
     required this.onTap,
     this.icon,
+    this.color,
     Key? key,
   }) : _density = VisualDensity.comfortable, super(key: key);
 
@@ -22,6 +24,7 @@ class Button extends StatelessWidget {
     required this.text,
     required this.onTap,
     this.icon,
+    this.color,
     Key? key,
   }) : _density = VisualDensity.compact, super(key: key);
 
@@ -29,6 +32,7 @@ class Button extends StatelessWidget {
     required this.text,
     required this.onTap,
     this.icon,
+    this.color,
     Key? key,
   }) : _density = VisualDensity.standard, super(key: key);
 
@@ -50,7 +54,7 @@ class Button extends StatelessWidget {
           )
         ),
         backgroundColor:  MaterialStateProperty.all<Color>(
-          Theme.of(context).primaryColor
+          color ?? Theme.of(context).primaryColor
         ),
         minimumSize: MaterialStateProperty.all<Size>(
           Size(double.infinity, 63.w)
@@ -60,7 +64,8 @@ class Button extends StatelessWidget {
         offset: const Offset(-5, -0.7),
         child: Icon(icon, size: 24.w),
       ) : const SizedBox.shrink(), 
-      label: UIText.block(text, style: const TextStyle(color: Colors.white))
+      label: _density == VisualDensity.compact ? UIText.heading6(text, style: const TextStyle(color: Colors.white))
+      : UIText.block(text, style: const TextStyle(color: Colors.white))
     );
   }
 }

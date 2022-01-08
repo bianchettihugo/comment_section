@@ -1,3 +1,4 @@
+import 'package:comment_section/app/Dependency/dependency.dart';
 import 'package:comment_section/app/Size/size_config.dart';
 import 'package:comment_section/src/comments/views/CommentsView/comments_view_controller.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class ApplicationWidget extends StatelessWidget {
     return MediaQuery(
       data: const MediaQueryData(),
       child: LayoutBuilder(builder: (context, constraints) {
+        Dependency.register<CommentsViewController>(() => CommentsViewController(), isSingleton: true);
         Application.sizeConfig = SizeConfig(
           constraints: constraints, 
           designSize: const Size(450, 840)
