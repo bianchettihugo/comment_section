@@ -21,6 +21,7 @@ class CommentsList extends StatelessWidget {
       child: ValueListenableBuilder<Map<String, dynamic>>(
         valueListenable: controller.comments!,
         builder:(context, comments, child) => ListView.builder(
+          controller: controller.scrollController,
           padding: EdgeInsets.only(bottom: 90.h),
           itemCount: comments['comments'].length,
           itemBuilder: (context, index){

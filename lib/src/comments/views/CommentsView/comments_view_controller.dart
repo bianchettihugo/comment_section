@@ -12,7 +12,9 @@ import 'package:flutter/services.dart';
 class CommentsViewController extends ChangeNotifier {
   ValueNotifier<Map<String, dynamic>>? comments;
   final commentInputController = InputController();
+  final commentWriteInputController = InputController();
   late ValueNotifier<Widget> bottomWidget;
+  final ScrollController scrollController = ScrollController();
 
   final Future<Map<String, dynamic>> fetchComments = Future<Map<String, dynamic>>(
     () async {
@@ -45,6 +47,8 @@ class CommentsViewController extends ChangeNotifier {
 
       comments?.value['comments'] = List.from(comments?.value['comments'])..add(newComment.toJson());
       comments?.notifyListeners();
+      commentInputController.textController.text = '';
+      scrollController.animateTo(scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 400), curve: Curves.linear);
     }
   }
 
@@ -63,6 +67,51 @@ class CommentsViewController extends ChangeNotifier {
 
     comments?.notifyListeners();
   }
+
+  void updateComment(String id) async {
+    if(commentWriteInputController.textController.text.trim().isEmpty) return;
+    int parentIndex = 0;
+    int index = -1;
+    if(id.contains(':')){
+      final tokens = id.split(':');
+      parentIndex = int.parse(tokens[0]);
+      index = int.parse(tokens[1]);
+      (comments?.value['comments'][parentIndex]['replies'] as List)[index]['content']
+      = commentWriteInputController.textController.text;
+    }else {
+      parentIndex = int.parse(id);
+      (comments?.value['comments'] as List)[parentIndex]['content']
+      = commentWriteInputController.textController.text;
+    }
+
+    comments?.notifyListeners();
+  }
+
+  void replyComment(String replyingTo, String id){
+    if(commentWriteInputController.textController.text.trim().isNotEmpty){
+      final today = DateTime.now();
+      final newComment = Comment(
+        id: comments!.value['comments'].length, 
+        content: commentWriteInputController.textController.text, 
+        createdAt: '${today.day.toString().padLeft(2,'0')}/${today.month.toString().padLeft(2,'0')}/${today.year.toString()}',
+        replyingTo: replyingTo,
+        user: User.fromJson(comments!.value['currentUser']),
+      );
+
+      int parentIndex = 0;
+      if(id.contains(':')){
+        final tokens = id.split(':');
+        parentIndex = int.parse(tokens[0]);
+        (comments?.value['comments'] as List)[parentIndex]['replies'].add(newComment.toJson());
+      }else {
+        parentIndex = int.parse(id);
+        (comments?.value['comments'] as List)[parentIndex]['replies'].add(newComment.toJson());
+      }
+      comments?.notifyListeners();
+      commentWriteInputController.textController.text = '';
+    }
+  }
+
 
   Future<bool> showDeleteConfirmationDialog(BuildContext context) async {
     bool result = false;

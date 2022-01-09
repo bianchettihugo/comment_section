@@ -38,6 +38,8 @@ class _CommentsViewState extends State<CommentsView> {
   void dispose() {
     controller.commentInputController.focusNode.dispose();
     controller.commentInputController.textController.dispose();
+    controller.commentWriteInputController.focusNode.dispose();
+    controller.commentWriteInputController.textController.dispose();
     super.dispose();
   }
 

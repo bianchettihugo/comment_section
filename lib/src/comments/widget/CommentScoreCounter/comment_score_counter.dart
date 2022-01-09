@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class CommentScoreCounter extends StatefulWidget {
   final int score;
   final Function(int score) onChange;
-  const CommentScoreCounter({ required this.onChange, this.score = 0, Key? key }) : super(key: key);
+  final bool active;
+  const CommentScoreCounter({ required this.onChange, this.score = 0, this.active = true, Key? key }) : super(key: key);
 
   @override
   _CommentScoreCounterState createState() => _CommentScoreCounterState();
@@ -35,7 +36,7 @@ class _CommentScoreCounterState extends State<CommentScoreCounter> {
           SizedBox(width: 50, child: LinkButton(
             text: '+', 
             opacity: 0.4,
-            onTap: (){setState(() {score++; widget.onChange(score);});}
+            onTap: (){if(widget.active) setState(() {score++; widget.onChange(score);});}
           )),
           const SizedBox(width: 3),
           UIText.heading6(score.toString()),
@@ -43,7 +44,7 @@ class _CommentScoreCounterState extends State<CommentScoreCounter> {
           SizedBox(width: 50, child: LinkButton(
             text: '-',
             opacity: 0.4,
-            onTap: (){setState(() {score--; widget.onChange(score);});}
+            onTap: (){if(widget.active) setState(() {score--; widget.onChange(score);});}
           )),
         ],
       )
