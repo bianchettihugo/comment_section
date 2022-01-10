@@ -20,7 +20,6 @@ class CommentBottomWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          //CommentField()
           ValueListenableBuilder(
             valueListenable: controller.bottomWidget,
             builder: (context, hasError, widget) => AnimatedSwitcher(
@@ -30,7 +29,11 @@ class CommentBottomWidget extends StatelessWidget {
               transitionBuilder: (Widget child, Animation<double> animation) {
                 return FadeTransition(
                   opacity: animation, 
-                  child: ScaleTransition(scale: animation, child: child, alignment: Alignment.bottomRight)
+                  child: ScaleTransition(
+                    scale: animation,
+                    child: child,
+                    alignment: Alignment.bottomRight
+                  )
                 );
               },
               layoutBuilder: (currentChild, previousChildren){

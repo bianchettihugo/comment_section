@@ -39,7 +39,7 @@ class CommentField extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage(controller.comments?.value['currentUser']['image']['png']),
+                backgroundImage: AssetImage(controller.userProfilePhoto),
               ),
               const Expanded(child: SizedBox(), flex: 2),
               Expanded(child: Button(text: 'SEND', onTap: (){

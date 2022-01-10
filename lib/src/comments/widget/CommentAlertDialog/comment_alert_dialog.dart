@@ -29,15 +29,27 @@ class CommentAlertDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(child: Button.small(text: 'NO, CANCEL', color: Theme.of(context).colorScheme.onSurface, onTap: (){
-                  Navigator.of(context).pop();
-                  onRefuse();
-                })),
+                Expanded(
+                  child: Button.small(
+                    text: 'NO, CANCEL',
+                    color: Theme.of(context).colorScheme.onSurface,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      onRefuse();
+                    }
+                  )
+                ),
                 const SizedBox(width: 5),
-                Expanded(child: Button.small(text: 'YES, DELETE', color: Theme.of(context).colorScheme.error, onTap: (){
-                  Navigator.of(context).pop();
-                  onAccept();
-                }))
+                Expanded(
+                  child: Button.small(
+                    text: 'YES, DELETE', 
+                    color: Theme.of(context).colorScheme.error, 
+                    onTap: (){
+                      Navigator.of(context).pop();
+                      onAccept();
+                    }
+                  )
+                )
               ],
             )
           ],

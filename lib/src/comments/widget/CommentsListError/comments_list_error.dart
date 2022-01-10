@@ -1,3 +1,4 @@
+import 'package:comment_section/app/application.dart';
 import 'package:flutter/material.dart';
 
 class CommentsListError extends StatelessWidget {
@@ -14,11 +15,11 @@ class CommentsListError extends StatelessWidget {
             Icon(
               Icons.error_outline,
               color: Theme.of(context).colorScheme.error,
-              size: 60,
+              size: 60.w,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text('Error: $error'),
+              padding: EdgeInsets.only(top: 20.h),
+              child: Text('Error: $error', textAlign: TextAlign.center),
             )
           ],
         ),

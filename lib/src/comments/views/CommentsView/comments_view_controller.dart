@@ -9,6 +9,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
+/// TODO - Refatorar esta classe e implementar o 'State Pattern' para controlar
+/// os estados do app
 class CommentsViewController extends ChangeNotifier {
   ValueNotifier<Map<String, dynamic>>? comments;
   final commentInputController = InputController();
@@ -128,5 +131,9 @@ class CommentsViewController extends ChangeNotifier {
 
     return result;
   }
+
+  String get userProfilePhoto => comments?.value['currentUser']['image']['png'];
+
+  
   
 }
